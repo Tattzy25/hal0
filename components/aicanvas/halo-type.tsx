@@ -12,14 +12,14 @@ import {
 } from 'framer-motion'
 
 // ─── Swap this to customise the ring text ─────────────────────────────────────
-const PHRASE = 'COPY ✦ PASTE ✦ SHIP ✦ REPEAT ✦ '
+const PHRASE = 'FACETIME ✦ AI ✦ FACETIME ✦ AI ✦ '
 
 // Static tilt + interaction tuning
 const TILT_REST = 24 // rotateX at rest — a flat-ish ellipse
 const TILT_HOVER = 24 // rotateX while hovered — no tilt change on hover
 const SECONDS_PER_TURN = 14 // full rotation duration
 const SPEED_HOVER = 0.3 // hover slows spin to 30%
-const RADIUS_FRACTION = 0.35 // ring radius ≈ 35% of min(w, h) → diameter ≈ 70%
+const RADIUS_FRACTION = 0.46 // ring radius ≈ 46% of min(w, h) → diameter ≈ 92%
 const STAR_SCALE = 0.65 // ✦ separators render smaller than letters
 
 // ─── Local theme hook — observes `dark` class on <html> ──────────────────────
@@ -53,8 +53,7 @@ function useTheme(ref: React.RefObject<HTMLElement | null>) {
 export default function HaloType() {
   const rootRef = useRef<HTMLDivElement>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
-  const { theme } = useTheme(rootRef)
-  const isDark = theme === 'dark'
+  useTheme(rootRef)
 
   // Container size → drives radius + font-size
   const [size, setSize] = useState(480)
@@ -174,7 +173,7 @@ export default function HaloType() {
       if (last != null) {
         const dt = (t - last) / 1000
         const degPerSec = 360 / SECONDS_PER_TURN
-        const next = rotateY.get() + degPerSec * speedMul.get() * dt
+        const next = rotateY.get() - degPerSec * speedMul.get() * dt
         rotateY.set(next % 360)
       }
     }
@@ -192,15 +191,11 @@ export default function HaloType() {
     }
   })
 
-  // Colours — raw hex only; no design tokens inside the component.
-  const bg = isDark ? '#0A0A0A' : '#F5F1E8'
-  const fg = isDark ? '#F5F1E8' : '#0A0A0A'
-  // Back-arc letters are rendered upside-down (not mirror-flipped) via a twin
-  // glyph facing inward. They get a dimmer hue so the front arc stays hero.
-  const fgBack = isDark ? '#7A756C' : '#6A655C'
-  const vignette = isDark
-    ? 'radial-gradient(60% 60% at 50% 52%, rgba(245,241,232,0.10) 0%, rgba(245,241,232,0.04) 35%, rgba(10,10,10,0) 70%)'
-    : 'radial-gradient(60% 60% at 50% 52%, rgba(10,10,10,0.08) 0%, rgba(10,10,10,0.03) 35%, rgba(245,241,232,0) 70%)'
+  // Colours — always dark.
+  const bg = '#000000'
+  const fg = '#F5F1E8'
+  const fgBack = '#7A756C'
+  const vignette = 'none'
 
   // Shared pointer handlers — work for hover AND touch.
   const handleEngage = () => engagement.set(1)
@@ -221,13 +216,16 @@ export default function HaloType() {
   return (
     <div
       ref={rootRef}
-      className="flex min-h-screen w-full items-center justify-center"
+      className="flex w-full items-center justify-center"
       style={{ backgroundColor: bg }}
     >
       <div
         ref={wrapRef}
-        className="relative flex h-[min(100vh,100vw)] w-full items-center justify-center overflow-hidden"
+        className="relative flex w-full items-center justify-center overflow-hidden"
         style={{
+          height: '500px',
+          paddingTop: '12px',
+          paddingBottom: '12px',
           touchAction: 'none',
           maskImage: edgeMask,
           WebkitMaskImage: edgeMask,
@@ -365,6 +363,49 @@ export default function HaloType() {
               )
             })}
           </motion.div>
+
+          {/* Floating T — centring wrapper keeps translate(-50%,-50%) off the motion element */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+            }}
+          >
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+              style={{
+                fontFamily: "'Rock Salt', cursive",
+                fontSize: Math.max(45, size * 0.182),
+                color: '#F5F1E8',
+                userSelect: 'none',
+                textAlign: 'center',
+                lineHeight: 1,
+                textShadow: [
+                  '0 1px 0 #ccc',
+                  '0 2px 0 #bbb',
+                  '0 3px 0 #aaa',
+                  '0 4px 0 #999',
+                  '0 5px 0 #888',
+                  '0 6px 1px rgba(0,0,0,.1)',
+                  '0 0 5px rgba(0,0,0,.1)',
+                  '0 1px 3px rgba(0,0,0,.3)',
+                  '0 3px 5px rgba(0,0,0,.2)',
+                  '0 5px 10px rgba(0,0,0,.25)',
+                  '0 10px 10px rgba(0,0,0,.2)',
+                  '0 20px 20px rgba(0,0,0,.15)',
+                ].join(', '),
+              }}
+            >
+              T
+            </motion.div>
+          </div>
         </div>
       </div>
     </div>
