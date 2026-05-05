@@ -83,7 +83,7 @@ const LetterSpanComponent = ({ letter, textColor, fontFamily, forwardedRef }: Le
 const LetterSpan = motion(LetterSpanComponent)
 
 // Configuration
-const TEXT = 'GOOD VIBES'
+const TEXT = "no touching"
 const INFLUENCE_RADIUS = 300
 const MAX_WEIGHT = 700
 const MIN_WEIGHT = 100
@@ -202,13 +202,13 @@ export default function GoodVibes() {
     }, 600)
   }
 
-  const bgColor = isDark ? '#1a1a1a' : '#f5f5f5'
-  const textColor = isDark ? 'text-[#ed7550]' : 'text-[#ed7550]'
+  const bgColor = '#000000'
+  const textColor = 'text-[#00D9FF]'
 
   return (
     <div
       ref={containerRef}
-      className={`flex w-full flex-col items-center justify-center gap-8 px-6 pt-10 pb-4 sm:px-10 ${scienceGothic.className}`}
+      className={`flex w-full flex-col items-center justify-center gap-8 px-6 pt-10 pb-16 sm:px-10 ${scienceGothic.className}`}
       style={{ backgroundColor: bgColor }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
