@@ -62,7 +62,7 @@ export default function HaloType() {
     if (!el) return
     const measure = () => {
       const rect = el.getBoundingClientRect()
-      setSize(Math.max(260, Math.min(rect.width, rect.height)))
+      setSize(Math.max(260, Math.min(rect.width, 600)))
     }
     measure()
     const ro = new ResizeObserver(measure)
@@ -223,9 +223,9 @@ export default function HaloType() {
         ref={wrapRef}
         className="relative flex w-full items-center justify-center overflow-hidden"
         style={{
-          height: '500px',
-          paddingTop: '12px',
-          paddingBottom: '12px',
+          height: '320px',
+          paddingTop: '40px',
+          paddingBottom: 0,
           touchAction: 'none',
           maskImage: edgeMask,
           WebkitMaskImage: edgeMask,
