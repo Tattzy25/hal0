@@ -208,7 +208,7 @@ export default function GoodVibes() {
   return (
     <div
       ref={containerRef}
-      className={`flex min-h-screen w-full flex-col items-center justify-center gap-8 px-6 sm:px-10 ${scienceGothic.className}`}
+      className={`flex w-full flex-col items-center justify-center gap-8 px-6 pt-10 pb-4 sm:px-10 ${scienceGothic.className}`}
       style={{ backgroundColor: bgColor }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
